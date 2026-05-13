@@ -1,0 +1,5 @@
+O algoritmo de **Floyd-Warshall** é usado para calcular as rotas mais curtas entre todos os pares de cidades ou hubs em uma rede de estradas, ferrovias ou rotas aéreas. Ele parte de uma matriz de distâncias iniciais e, de forma iterativa, verifica se passar por um ponto intermediário reduz o custo total entre dois pontos. Assim, ao final, temos uma tabela completa com os menores caminhos possíveis entre todos os nós da rede.
+
+Na prática, isso significa que, se você tiver um mapa com várias cidades conectadas por diferentes rotas, o algoritmo consegue identificar não apenas a rota mais curta entre duas cidades específicas, mas também entre todas as combinações possíveis de cidades. Isso é útil para sistemas de transporte, logística e planejamento de viagens, pois garante uma visão global da rede.
+
+Dessa forma, o Floyd-Warshall é uma solução eficiente para problemas de **rotas mínimas** em grafos densos, permitindo que gestores de transporte ou sistemas de navegação tenham acesso imediato às melhores conexões possíveis em qualquer cenário de deslocamento.
