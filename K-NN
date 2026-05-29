@@ -1,0 +1,39 @@
+import numpy as np
+from sklearn.datasets import load_breast_cancer
+from sklearn.model_selection import train_test_split
+from sklearn.preprocessing import StandardScaler
+from sklearn.neighbors import KNeighborsClassifier
+from sklearn.metrics import accuracy_score
+
+# 1. Carregar dataset
+data = load_breast_cancer()
+X, y = data.data, data.target
+
+# 2. Separar treino e teste (80/20)
+X_train, X_test, y_train, y_test = train_test_split(
+    X, y, test_size=0.2, random_state=42, stratify=y
+)
+
+# 3. Normalizar os dados
+scaler = StandardScaler()
+X_train = scaler.fit_transform(X_train)
+X_test = scaler.transform(X_test)
+
+# 4 e 5. Treinar K-NN com K = 1, 3 e 5 usando Euclidiana e Manhattan
+ks = [1, 3, 5]
+metrics = ["euclidean", "manhattan"]
+
+results = {}
+
+for k in ks:
+    for metric in metrics:
+        knn = KNeighborsClassifier(n_neighbors=k, metric=metric)
+        knn.fit(X_train, y_train)
+        y_pred = knn.predict(X_test)
+        acc = accuracy_score(y_test, y_pred)
+        results[(k, metric)] = acc
+
+# 6. Comparar acurácia
+print("Resultados de acurácia:")
+for (k, metric), acc in results.items():
+    print(f"K={k}, Métrica={metric} -> Acurácia: {acc:.4f}")
