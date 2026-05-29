@@ -1,0 +1,94 @@
+import time
+
+class Grafo:
+    def __init__(self, vertices):
+        self.vertices = vertices
+        self.grafo = []
+
+    def adicionar_aresta(self, u, v, peso):
+        self.grafo.append([u, v, peso])
+
+    def buscar_raizes(self, pai, i):
+        if pai[i] == i:
+            return i
+        pai[i] = self.buscar_raizes(pai, pai[i])
+        return pai[i]
+
+    def unir_redes(self, pai, rank, x, y):
+        xraiz = self.buscar_raizes(pai, x)
+        yraiz = self.buscar_raizes(pai, y)
+
+        if rank[xraiz] < rank[yraiz]:
+            pai[xraiz] = yraiz
+        elif rank[xraiz] > rank[yraiz]:
+            pai[yraiz] = xraiz
+        else:
+            pai[yraiz] = xraiz
+            rank[xraiz] += 1
+
+    def executar_kruskal(self):
+        resultado = []
+        i = 0
+        e = 0
+        custo_total = 0
+
+        # Ordena em ordem decrescente para Árvore Geradora Máxima
+        self.grafo = sorted(self.grafo, key=lambda item: item[2], reverse=True)
+
+        pai = []
+        rank = []
+
+        for no in range(self.vertices):
+            pai.append(no)
+            rank.append(0)
+
+        while e < self.vertices - 1:
+            u, v, w = self.grafo[i]
+            i = i + 1
+            x = self.buscar_raizes(pai, u)
+            y = self.buscar_raizes(pai, v)
+
+            if x != y:
+                e = e + 1
+                resultado.append([u, v, w])
+                custo_total += w
+                self.unir_redes(pai, rank, x, y)
+
+        return resultado, custo_total
+
+
+# --- EXECUÇÃO DO CASO DE TESTE (MAPA DA DINÂMICA) ---
+if __name__ == '__main__':
+    g = Grafo(8)
+
+    g.adicionar_aresta(4, 7, 1)
+    g.adicionar_aresta(5, 6, 2)
+    g.adicionar_aresta(4, 5, 3)
+    g.adicionar_aresta(6, 7, 4)
+    g.adicionar_aresta(0, 1, 5)
+    g.adicionar_aresta(3, 7, 6)
+    g.adicionar_aresta(2, 5, 7)
+    g.adicionar_aresta(2, 6, 8)
+    g.adicionar_aresta(1, 2, 9)
+    g.adicionar_aresta(1, 6, 10)
+    g.adicionar_aresta(1, 5, 11)
+    g.adicionar_aresta(1, 7, 13)
+    g.adicionar_aresta(1, 4, 14)
+    g.adicionar_aresta(0, 4, 15)
+    g.adicionar_aresta(0, 3, 16)
+    g.adicionar_aresta(3, 6, 17)
+    g.adicionar_aresta(0, 7, 18)
+
+    inicio = time.perf_counter()
+    
+    caminho_final, custo_final = g.executar_kruskal()
+    
+    fim = time.perf_counter()
+    tempo_execucao = (fim - inicio) * 1000  # Converte para milissegundos
+
+    print("--- RESULTADO DO ALGORITMO DE KRUSKAL (Árvore Geradora Máxima) ---")
+    print("Rotas escolhidas para a rede:")
+    for u, v, peso in caminho_final:
+        print(f"Rota da cidade {u} para a cidade {v} | Custo: {peso}")
+    print(f"\nCusto Total da Obra: {custo_final}")
+    print(f"Tempo de execução: {tempo_execucao:.4f} milissegundos")
