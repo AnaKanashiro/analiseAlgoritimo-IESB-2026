@@ -37,3 +37,18 @@ for k in ks:
 print("Resultados de acurácia:")
 for (k, metric), acc in results.items():
     print(f"K={k}, Métrica={metric} -> Acurácia: {acc:.4f}")
+
+
+'''
+Qual K teve melhor desempenho?  
+K=3 apresenta a melhor acurácia, equilibrando bem variância e viés.
+
+Qual métrica obteve melhor resultado?  
+A Euclidiana tende a performar ligeiramente melhor que a Manhattan nesse dataset.
+
+O que aconteceu com K muito pequeno?  
+Com K=1, o modelo fica muito sensível a ruído e outliers, podendo classificar incorretamente casos isolados.
+
+Por que normalizar é importante?  
+Porque as variáveis têm escalas diferentes (algumas variam de 1 a 10, outras chegam a milhares). Sem normalização, atributos com valores grandes dominariam a distância, distorcendo o resultado do K-NN.
+'''
